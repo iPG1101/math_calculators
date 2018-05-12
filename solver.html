@@ -1,16 +1,176 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>10.6 Solver</title>
-	<!--
-		10.6 Calculator
-		Shows it's work
-		So you don't . .
-		have to!!	  -
-					 \_/
-					-->
+	<title>Math Homework Solver</title>
+	<style>
+		body {
+			font-family: "Lucida Console", Monaco, monospace
+		}
+		#logger {
+			width: 70.3%;
+			height: 99%;
+			top: 0;
+			left: 0;
+			overflow-x: wrap;
+			overflow-y: scroll;
+			position: absolute;
+			border: solid 0.5vh lightgrey;
+		}
+		#options {
+			width: 29%;
+			height: 39%;
+			top: 0;
+			right: 0;
+			overflow-x: wrap;
+			overflow-y: scroll;
+			position: absolute;
+			border: solid 0.5vh lightgrey;
+		}
+		#options2 {
+			width: 29%;
+			height: 60%;
+			bottom: 0;
+			right: 0;
+			overflow-x: wrap;
+			overflow-y: scroll;
+			position: absolute;
+			border: solid 0.5vh lightgrey;
+		}
+		tr {
+			border-bottom: solid 1px grey;
+			border-top: solid 1px black;
+		}
+		td {
+			border-left: solid 1px black;
+			border-right: solid 1px grey;
+			text-align: center;
+			width: 48px;
+		}
+	</style>
 </head>
 <body>
-	<script src='solver.js'></script>
+	<script src='logger.js'></script>
+	<script src='quadratic.js'></script>
+	<script src='graph.js'></script>
+	<script src='distance.js'></script>
+	<script>
+		logger.log("Loading a few more things...");
+		window.$ = document.querySelector.bind(document);
+		var Loader = {
+			features: {
+				"Quadratics": {
+					label: "Calculate",
+					controls: [
+						['input', ['type="text"', 'value="1x^2 + 5x - 104 = 0"'], '#equation', true]
+					],
+					button_click: (e)=>{
+						Math.quadratic($('#equation').value);
+					}
+				},
+				"Graph": {
+					label: "Graph",
+					controls: [
+						['input', ['type="text"', 'value="y = (x * x) / (x*x*x)"'], '#equation', true],
+						['input', ['type="text"', 'value="10"'], '#w', false],
+					],
+					button_click: (e)=>{
+						Math.graphLine($('#equation').value, $('#w').value, $('#w').value);
+					}
+				},
+				"Distance": {
+					label: "Calculate",
+					controls: [
+						['input', ['type="text"', 'value="(0, 0)"'], '#point1', false],
+						['input', ['type="text"', 'value="(4, 7)"'], '#point2', true]
+					],
+					button_click: (e)=>{
+						Math.distance($('#point1').value, $('#point2').value);
+					}
+				},
+				"Square Root": {
+					label: "Calculate",
+					controls: [
+						['input', ['type="text"', 'value="16"'], '#j1', true]
+					],
+					button_click: (e)=>{
+						logger.log("&radic;("+$("#j1").value+") = " + Math.sqrt($('#j1').value));
+					}
+				},
+				"Info": {
+					label: "Dismiss",
+					controls: [
+						['a', ['innerHTML="Idea: Ryan Campbell<br/>Programmer: John Jelatis"'], '#d1', true]
+					],
+					button_click: (e)=>{
+						logger.success("Dismissed credits");
+						$('#options2').innerHTML = `<i>Select a function from above.</i>`
+					}
+				},
+				"Clear": {
+					label: "Confirm and Clear",
+					controls: [
+						['a', ['innerHTML="Are you sure?"'], '#p1', true]
+					],
+					button_click: (e)=>{
+						logger.clear();
+						logger.success("Cleared console!");
+						$('#options2').innerHTML = `<i>Select a function from above.</i>`
+					}
+				}
+			},
+			load: (e)=>{
+				logger.log("Loading feature `" + e + "`...");
+				$("#options2").innerHTML = "";
+				var feature = Loader.features[e];
+				var feature_obj = {
+					controls: []
+				};
+				for(var i in feature.controls) {
+					feature_obj.controls[i] = document.createElement(feature.controls[i][0]);
+					feature_obj.controls[i].id = 'control' + i;
+					$("#options2").appendChild(feature_obj.controls[i]);
+					for(var j in feature.controls[i][1]) {
+						eval('$(\'#' + feature_obj.controls[i].id + '\').' + feature.controls[i][1][j]);
+					};
+					feature_obj.controls[i].id = feature.controls[i][2].replace('#', '');
+					if(feature.controls[i][3]) $('#options2').appendChild(document.createElement('br'));
+				};
+				var b = $('#options2').appendChild(document.createElement('button'));
+				b.onclick = (evt)=>{
+					Loader.features[e].button_click(evt);
+				};
+				b.innerText = feature.label;
+				logger.success("Done!");
+			}
+		};
+		window.onload = function onload(e){
+			document.body.style.fontSize = '150%'
+			var optionsPanel = document.body.appendChild(document.createElement('div'));
+			optionsPanel.id = 'options';
+			for(var feature in Loader.features){
+				optionsPanel.innerHTML += `<button onclick='Loader.load(this.innerHTML)'>${feature}</button>`;
+			};
+			var optionsPanel2 = document.body.appendChild(document.createElement('div'));
+			optionsPanel2.id = 'options2'
+			optionsPanel2.innerHTML = `<i>Select a function from above.</i>`;
+			logger.success("Done!");
+		};
+		var landscape = true;
+		window.onresize = function onresize(e){
+			if(window.innerWidth <= window.innerHeight && landscape) {
+				landscape = false;
+				logger.warn("Warning:");
+				logger.warn("This program is not optimized for this orientation.");
+				logger.warn("Please switch back to landscape.");
+			}
+			if(window.innerWidth > window.innerHeight) {
+				landscape = true;
+			};
+		};
+		window.onresize();
+		window.onerror = function onerror(e){
+			logger.err(e);
+		};
+	</script>
 </body>
 </html>
