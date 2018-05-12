@@ -35,7 +35,7 @@ Math.graphLine = function graphLine(equation, w, h) {
 	canvas.getContext('2d').moveTo(x, y);
 	for(var x = -w; x < 2*w+1; x+=0.25) {
 		var y = 0;
-		eval(equation.toLowerCase());
+		eval(equation);
 		canvas.getContext('2d').lineTo(canvas.width/2+x*rs, canvas.height/2-y*cs);
 	};
 	for(var x = 2*w+1-0.125; x > -w-0.125; x-=0.25) {
