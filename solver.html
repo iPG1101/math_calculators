@@ -96,6 +96,16 @@
 						logger.log("&radic;("+$("#j1").value+") = " + Math.sqrt($('#j1').value));
 					}
 				},
+				"Exponent": {
+					label: "Calculate",
+					controls: [
+						['input', ['type="text"', 'value="16"'], '#j1', true],
+						['input', ['type="text"', 'value="2"'], '#j2', true]
+					],
+					button_click: (e)=>{
+						logger.log("(" + $("#j1").value+")^"+$('#j2').value+" = " + Math.pow($('#j1').value, $('#j2').value));
+					}
+				},
 				"Info": {
 					label: "Dismiss",
 					controls: [
