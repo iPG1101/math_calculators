@@ -90,10 +90,10 @@
 					}
 				},
 				"Symmetry": {
-					label: "Lines of Symmetry",
+					label: "Get Lines of Symmetry",
 					controls: [
-						['input', ['type="text"', 'value="3"'], '#sides', false],
-						['p', ['innerHTML="(polygon\'s sides)"'], '#sides2', true]
+						['input', ['type="text"', 'value="4"'], '#sides', false],
+						['p', ['innerHTML="^(polygon\'s sides)"'], '#sides2', true]
 					],
 					button_click: (e)=>{
 						Math.symmetry($('#sides').value);
