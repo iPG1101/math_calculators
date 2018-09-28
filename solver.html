@@ -54,6 +54,7 @@
 	<script src='quadratic.js'></script>
 	<script src='graph.js'></script>
 	<script src='distance.js'></script>
+	<script src='symmetry.js'></script>
 	<script>
 		logger.log("Loading a few more things...");
 		window.$ = document.querySelector.bind(document);
@@ -86,6 +87,16 @@
 					],
 					button_click: (e)=>{
 						Math.distance($('#point1').value, $('#point2').value);
+					}
+				},
+				"Symmetry": {
+					label: "Lines of Symmetry",
+					controls: [
+						['input', ['type="text"', 'value="3"'], '#sides', false],
+						['p', ['innerHTML="(polygon\'s sides)"'], '#sides2', true]
+					],
+					button_click: (e)=>{
+						Math.symmetry($('#sides').value);
 					}
 				},
 				"Square Root": {
